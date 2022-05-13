@@ -12,6 +12,9 @@ class Overworld extends Phaser.Scene {
         this.ROOMWIDTH = 512;
         this.ROOMHEIGHT = 336;
 
+        this.cameraX;
+        this.cameraY;
+
         // Set background color
         this.cameras.main.setBackgroundColor('#666');
 
@@ -53,13 +56,56 @@ class Overworld extends Phaser.Scene {
 
         this.physics.world.on('worldbounds', (body, blockedUp, blockedDown, blockedLeft, blockedRight) => {
             if (blockedUp) {
+                this.cameras.main.flash(250);
+                this.cameras.main.shake(250);
                 this.cameras.main.pan(
-                    this.ROOMWIDTH*1.5,
-                    this.ROOMHEIGHT*0.5,
-                    3000,
-                    'Linear'
+                    this.ROOMWIDTH*1.5,     // x of the center point
+                    this.ROOMHEIGHT*0.5,    // y of the center point
+                    1000, 
+                    // 3000,                // duration in seconds
+                    //'Linear'              // easing function
+                    'Cubic.easeOut'
                 );
                 this.physics.world.setBounds(this.ROOMWIDTH-this.player.displayWidth/2, 0, 
+                    this.ROOMWIDTH+this.player.displayWidth, this.ROOMHEIGHT+this.player.displayHeight/2);
+            } else if (blockedLeft) {
+                this.cameras.main.flash(250);
+                this.cameras.main.shake(250);
+                this.cameras.main.pan(
+                    this.ROOMWIDTH*0.5,     // x of the center point
+                    this.ROOMHEIGHT*1.5,    // y of the center point
+                    1000, 
+                    // 3000,                // duration in seconds
+                    //'Linear'              // easing function
+                    'Cubic.easeOut'
+                );
+                this.physics.world.setBounds(0, this.ROOMHEIGHT-this.player.displayHeight/2, 
+                    this.ROOMWIDTH+this.player.displayWidth, this.ROOMHEIGHT+this.player.displayHeight/2);
+            } else if (blockedRight) {
+                this.cameras.main.flash(250);
+                this.cameras.main.shake(250);
+                this.cameras.main.pan(
+                    this.ROOMWIDTH*2.5,     // x of the center point
+                    this.ROOMHEIGHT*1.5,    // y of the center point
+                    1000, 
+                    // 3000,                // duration in seconds
+                    //'Linear'              // easing function
+                    'Cubic.easeOut'
+                );
+                this.physics.world.setBounds(this.ROOMWIDTH*2-this.player.displayWidth/2, this.ROOMHEIGHT-this.player.displayHeight/2, 
+                    this.ROOMWIDTH+this.player.displayWidth, this.ROOMHEIGHT+this.player.displayHeight/2);
+            } else if (blockedDown) {
+                this.cameras.main.flash(250);
+                this.cameras.main.shake(250);
+                this.cameras.main.pan(
+                    this.ROOMWIDTH*1.5,     // x of the center point
+                    this.ROOMHEIGHT*1.5,    // y of the center point
+                    1000, 
+                    // 3000,                // duration in seconds
+                    //'Linear'              // easing function
+                    'Sine.easeOut'
+                );
+                this.physics.world.setBounds(this.ROOMWIDTH-this.player.displayWidth/2, this.ROOMHEIGHT-this.player.displayHeight/2, 
                     this.ROOMWIDTH+this.player.displayWidth, this.ROOMHEIGHT+this.player.displayHeight/2);
             }
         });
